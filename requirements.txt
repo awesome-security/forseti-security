@@ -13,4 +13,4 @@ pylint
 
 # Pull in the packages in setup.py
 
--e .
+#-e .
