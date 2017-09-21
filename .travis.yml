@@ -33,6 +33,8 @@ env:
 before_install:
   # Install necessary pip packages.
   - pip install --upgrade pip
+  - pip install --upgrade -r requirements.txt
+  - pip install setup.py
   # Required for codecov.io to export coverage within a Docker container.
   #- "CI_ENV=`bash <(curl -s https://codecov.io/env)`"
 
