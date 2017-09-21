@@ -1,3 +1,8 @@
+# Pull in the packages from setup.py
+
+--index-url https://pypi.python.org/simple/
+-e .
+
 # Necessary environment tools.
 # See the logic around the separation of setup.py and requirements.txt
 # https://packaging.python.org/discussions/install-requires-vs-requirements/
@@ -10,7 +15,3 @@ grpcio-tools==1.4.0
 mock
 parameterized
 pylint
-
-# Pull in the packages in setup.py
-
-#-e .
