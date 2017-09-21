@@ -27,6 +27,9 @@ before_install:
   - pip install --upgrade -q pip
   - pip install --upgrade -q -r environment_requirements.txt
 
+install:
+ - python setup.py install
+
 jobs:
   include:
     - stage: lint
@@ -37,7 +40,6 @@ jobs:
       - coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'
     - stage: build
       script:
-      - python setup.py install
       - yes | forseti_inventory
       - yes | forseti_iam
 
