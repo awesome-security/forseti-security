@@ -20,22 +20,24 @@ python:
   - "2.7"
 
 before_install:
-  - pip install --upgrade -q pip
-  - pip install --upgrade -q -r environment_requirements.txt
+  - "pip install --upgrade -q pip"
+  - "pip install --upgrade -q -r environment_requirements.txt"
+
+stages:
+  - "lint"
+  - "test"
+  - "build"
 
 jobs:
   include:
-     - stage: lint
-       script:
-          - "pylint --rcfile=pylintrc google/ scripts/gcp_setup"
-     - stage: test
-        script:
-          - "coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'"
-    - stage: build
-        script:
-          - "python setup.py install"
-          - yes | forseti_inventory
-          - yes | forseti_iam
+     - stage: "lint"
+       script: "pylint --rcfile=pylintrc google/ scripts/gcp_setup"
+     - stage: "test"
+        script: "coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'"
+    - stage: "build"
+        script: "python setup.py install"
+        script: "yes | forseti_inventory"
+        script: "yes | forseti_iam"
 
 after_success:
   - "codecov"
