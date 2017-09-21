@@ -41,6 +41,8 @@ script:
   #- if [[ "$TEST_SUITE" == "$PY_TEST" ]]; then docker exec -it build /bin/sh -c "coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'"; fi
   #- if [[ "$TEST_SUITE" == "$PY_TEST" && "$?" -eq 0 ]]; then docker exec -it build /bin/sh -c "codecov"; fi
   # Check code compliance.
+  - type pylint
+  - pylint
   - if [[ "$TEST_SUITE" == "$PY_LINT" ]]; then "pylint --rcfile=pylintrc google/ scripts/gcp_setup/"; fi
 
 #jobs:
