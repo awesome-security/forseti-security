@@ -33,11 +33,11 @@ jobs:
      - stage: "lint"
        script: "pylint --rcfile=pylintrc google/ scripts/gcp_setup"
      - stage: "test"
-        script: "coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'"
+       script: "coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'"
     - stage: "build"
-        script: "python setup.py install"
-        script: "yes | forseti_inventory"
-        script: "yes | forseti_iam"
+       script: "python setup.py install"
+       script: "yes | forseti_inventory"
+       script: "yes | forseti_iam"
 
 after_success:
   - "codecov"
