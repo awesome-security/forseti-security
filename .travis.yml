@@ -40,17 +40,10 @@ before_install:
 install:
   - python setup.py install
 
-jobs:
-  include:
-    - stage: pylint
-      script: pylint --rcfile=pylintrc google/ scripts/gcp_setup
-      if: env(TEST_SUITE) = env(PY_LINT)
-    - stage: pytest
-      script: coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'
-      if: env(TEST_SUITE) = env(PY_TEST)
-    - stage: build
-      script: yes | which forseti_inventory
-      script: yes | which forseti_iam
+script:
+  - if [[ "$TEST_SUITE == "$PY_LINT" ]]; then pylint --rcfile=pylintrc google/ scripts/gcp_setup; fi
+  - if [[ "$TEST_SUITE == "$PY_TEST" ]]; then coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'; fi
+  - if [[ "$TEST_SUITE == "$BUILD" ]]; then yes | which forseti_inventory; yes | which forseti_iam; fi
 
 after_success:
   - codecov
