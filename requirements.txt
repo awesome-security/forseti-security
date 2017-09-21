@@ -1,3 +1,7 @@
+# Necessary environment tools.
+# See the logic around the separation of setup.py and requirements.txt
+# https://packaging.python.org/discussions/install-requires-vs-requirements/
+
 coverage
 codecov
 google-apputils
@@ -8,4 +12,5 @@ parameterized
 pylint
 
 # Pull in the packages in setup.py
+
 -e .

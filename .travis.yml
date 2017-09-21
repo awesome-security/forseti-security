@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-sudo: required
+#sudo: required
 
 language: python
 
@@ -23,26 +23,18 @@ env:
   global:
     - PY_LINT=pylint
     - PY_TEST=pytest
-    - DOCKER_BUILD=docker_build
   matrix:
     - TEST_SUITE=$PY_LINT
     - TEST_SUITE=$PY_TEST
-    - TEST_SUITE=$DOCKER_BUILD
 
-services:
-  - docker
+#services:
+#  - docker
 
 before_install:
   # Install necessary pip packages.
-  - pip install --upgrade -q -r requirements.txt
-  # Build the Forseti base image containing all the dependencies.
-  #- docker build -t forseti/base -f scripts/docker/base .
-  # Build the Forseti image containing the dependencies and code.
-  #- docker build -t forseti/build -f scripts/docker/forseti --no-cache .
+  - pip install --upgrade -r requirements.txt
   # Required for codecov.io to export coverage within a Docker container.
-  - "CI_ENV=`bash <(curl -s https://codecov.io/env)`"
-  # Start the container for testing and code verification.
-  #- docker run $CI_ENV -it -d --name build forseti/build /bin/bash
+  #- "CI_ENV=`bash <(curl -s https://codecov.io/env)`"
 
 script:
   # Run code coverage.
@@ -50,3 +42,16 @@ script:
   #- if [[ "$TEST_SUITE" == "$PY_TEST" && "$?" -eq 0 ]]; then docker exec -it build /bin/sh -c "codecov"; fi
   # Check code compliance.
   - if [[ "$TEST_SUITE" == "$PY_LINT" ]]; then "pylint --rcfile=pylintrc google/ scripts/gcp_setup/"; fi
+
+#jobs:
+#  include:
+#    - stage: build
+#      script:
+#        # Build the Forseti base image containing all the dependencies.
+#        - docker build -t forseti/base -f scripts/docker/base .
+#        # Build the Forseti image containing the dependencies and code.
+#        - docker build -t forseti/build -f scripts/docker/forseti --no-cache .
+#        # Start the container for build verification.
+#        - docker run $CI_ENV -it -d --name build forseti/build /bin/bash
+#        # Build Forseti Security.
+#        - docker exec -it build /bin/bash -c "python setup.py install"
