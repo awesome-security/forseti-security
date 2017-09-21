@@ -25,9 +25,9 @@ env:
     - PY_TEST=pytest
     - DOCKER_BUILD=docker_build
   matrix:
-    - TEST_SUITE=ENV["PY_LINT"]
-    - TEST_SUITE=ENV["PY_TEST"]
-    - TEST_SUITE=ENV["DOCKER_BUILD"]
+    - TEST_SUITE=$PY_LINT
+    - TEST_SUITE=$PY_TEST
+    - TEST_SUITE=$DOCKER_BUILD
 
 services:
   - docker
@@ -43,13 +43,9 @@ before_install:
   - docker run $CI_ENV -it -d --name build forseti/build /bin/bash
 
 script:
-  # Debug
-  - echo env
-  - echo $PY_TEST
-  - echo ENV["$PY_TEST"]
   # Run code coverage.
   - if [[ "$TEST_SUITE" == "$PY_TEST" ]]; then docker exec -it build /bin/sh -c "coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'"; fi
-  - if [[ "$TEST_SUITE" == "$PY_TEST" ]]; then docker exec -it build /bin/sh -c "codecov"; fi
+  - if [[ "$TEST_SUITE" == "$PY_TEST" && "$?" -eq 0 ]]; then docker exec -it build /bin/sh -c "codecov"; fi
   # Check code compliance.
   - if [[ "$TEST_SUITE" == "$PY_LINT" ]]; then "pylint --rcfile=pylintrc google/ scripts/gcp_setup/"; fi
 
