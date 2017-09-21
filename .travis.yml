@@ -28,16 +28,15 @@ before_install:
   - pip install --upgrade -q -r environment_requirements.txt
 
 install:
- - python setup.py install
+  - python setup.py install
 
 jobs:
   include:
-    - stage: lint and test
+    - stage: lint, test, and build
       script:
       - pylint --rcfile=pylintrc google/ scripts/gcp_setup
       script:
       - coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'
-    - stage: build
       script:
       - yes | which forseti_inventory
       sript:
