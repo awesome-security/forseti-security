@@ -25,9 +25,9 @@ env:
     - PY_TEST=pytest
     - DOCKER_BUILD=docker_build
   matrix:
-    - TEST_SUITE=PY_LINT
-    - TEST_SUITE=PY_TEST
-    - TEST_SUITE=DOCKER_BUILD
+    - TEST_SUITE=ENV["PY_LINT"]
+    - TEST_SUITE=ENV["PY_TEST"]
+    - TEST_SUITE=ENV["DOCKER_BUILD"]
 
 services:
   - docker
@@ -44,10 +44,10 @@ before_install:
 
 script:
   # Run code coverage.
-  - if [ "$TEST_SUITE" = "$PY_TEST" ] then docker exec -it build /bin/sh -c "coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'" fi
+  - if [[ "$TEST_SUITE" == ENV["$PY_TEST"] ]]; then docker exec -it build /bin/sh -c "coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'"; fi
   # Check code compliance.
-  - if [ "TEST_SUITE" = "$PY_LINT" ] then docker exec -it build /bin/sh -c "pylint --rcfile=pylintrc google/ scripts/gcp_setup/" fi
-  - if [ "TEST_SUITE" = "$PY_LINT" ] then docker exec -it build /bin/sh -c "codecov" fi
+  - if [[ "$TEST_SUITE" == ENV["$PY_LINT"] ]]; then docker exec -it build /bin/sh -c "pylint --rcfile=pylintrc google/ scripts/gcp_setup/"; fi
+  - if [[ "$TEST_SUITE" == ENV["$PY_LINT"] ]]; then docker exec -it build /bin/sh -c "codecov"; fi
 
 after_success:
   # Execute codecov inside the docker container. Need to export env for codecov.io upload.
