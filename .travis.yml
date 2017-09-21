@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#sudo: required
+sudo: required
+
+dist: trusty
 
 language: python
 
@@ -29,8 +31,8 @@ env:
     - TEST_SUITE=$PY_LINT
     - TEST_SUITE=$PY_TEST
 
-#services:
-#  - docker
+services:
+  - docker
 
 before_install:
   - pip install --upgrade -q pip
@@ -44,9 +46,9 @@ install:
 script:
   # Run code coverage.
   #- if [[ "$TEST_SUITE" == "$PY_TEST" ]]; then docker exec -it build /bin/sh -c "coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'"; fi
-  - if [[ "$TEST_SUITE" == "$PY_TEST" ]]; coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'; fi
+  - if [[ "$TEST_SUITE" == "$PY_TEST" ]]; then coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'; fi
   #- if [[ "$TEST_SUITE" == "$PY_TEST" && "$?" -eq 0 ]]; then docker exec -it build /bin/sh -c "codecov"; fi
-  - if [[ "$TEST_SUITE" == "$PY_TEST" && "$?" -eq 0 ]]; codecov; fi
+  - if [[ "$TEST_SUITE" == "$PY_TEST" && "$?" -eq 0 ]]; then codecov; fi
   # Check code compliance.
   - if [[ "$TEST_SUITE" == "$PY_LINT" ]]; then pylint --rcfile=pylintrc google/ scripts/gcp_setup/; fi
 
