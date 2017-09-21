@@ -32,11 +32,15 @@ install:
 
 jobs:
   include:
-    - stage: Lint, Test, and Build
+    - stage: lint and test
       script:
       - pylint --rcfile=pylintrc google/ scripts/gcp_setup
+      script:
       - coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'
+    - stage: build
+      script:
       - yes | which forseti_inventory
+      sript:
       - yes | which forseti_iam
 
 after_success:
