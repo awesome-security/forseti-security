@@ -23,16 +23,6 @@ cache: pip
 python:
   - "2.7"
 
-env:
-  global:
-    - PY_LINT=pylint
-    - PY_TEST=pytest
-    - BUILD=build
-  matrix:
-    - TEST_SUITE=$PY_LINT
-    - TEST_SUITE=$PY_TEST
-    - TEST_SUITE=$BUILD
-
 before_install:
   - pip install --upgrade -q pip
   - pip install --upgrade -q -r environment_requirements.txt
@@ -41,9 +31,9 @@ install:
   - python setup.py install
 
 script:
-  - if [[ "$TEST_SUITE" == "$PY_LINT" ]]; then pylint --rcfile=pylintrc google/ scripts/gcp_setup; fi
-  - if [[ "$TEST_SUITE" == "$PY_TEST" ]]; then coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'; fi
-  - if [[ "$TEST_SUITE" == "$PY_TEST" ]]; then codecov; fi
-  - if [[ "$TEST_SUITE" == "$BUILD" ]]; then yes | which forseti_inventory; yes | which forseti_iam; fi
+  - pylint --rcfile=pylintrc google/ scripts/gcp_setup
+  - coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'
+  - yes | which forseti_inventory; yes | which forseti_iam
 
 after_success:
+  - codecov
