@@ -1,0 +1,12 @@
+# Necessary environment tools.
+# See the logic around the separation of setup.py and requirements.txt
+# https://packaging.python.org/discussions/install-requires-vs-requirements/
+
+coverage
+codecov
+google-apputils
+grpcio==1.4.0
+grpcio-tools==1.4.0
+mock
+parameterized
+pylint
