@@ -1,0 +1,11 @@
+coverage
+codecov
+google-apputils
+grpcio==1.4.0
+grpcio-tools==1.4.0
+mock
+parameterized
+pylint
+
+# Pull in the packages in setup.py
+-e .
