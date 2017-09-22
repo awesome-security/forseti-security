@@ -38,12 +38,12 @@ before_install:
   - pip install --upgrade -q -r environment_requirements.txt
   - python setup.py install
 
+install: true
+
 script:
-  - if [[ "$TEST_SUITE" == "$PY_LINT" ]]; \
-    then for dir in `find . -type d`; \
-    do pylint --rcfile=pylintrc google/cloud/security/common $dir; done; fi
-  - if [[ "$TEST_SUITE" == "$PY_TEST" ]]; then coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'; codecov; fi
-  - if [[ "$TEST_SUITE" == "$BUILD" ]]; then yes | which forseti_inventory; yes | which forseti_iam; fi
+  - scripts/test_suite.sh $TEST_SUITE
+  #- if [[ "$TEST_SUITE" == "$PY_TEST" ]]; then coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'; codecov; fi
+  #- if [[ "$TEST_SUITE" == "$BUILD" ]]; then yes | which forseti_inventory; yes | which forseti_iam; fi
 
 after_success:
   - codecov
