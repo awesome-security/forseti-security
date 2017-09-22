@@ -19,6 +19,7 @@ dist: trusty
 language: python
 
 cache: pip
+
 env:
   global:
     - PY_LINT=pylint
@@ -35,8 +36,6 @@ python:
 before_install:
   - pip install --upgrade -q pip
   - pip install --upgrade -q -r environment_requirements.txt
-
-install:
   - python setup.py install
 
 script:
