@@ -39,7 +39,7 @@ before_install:
   - python setup.py install
 
 script:
-  - if [[ "$TEST_SUITE" == "$PY_LINT" ]]; then pylint --rcfile=pylintrc google/ scripts/gcp_setup; fi
+  - if [[ "$TEST_SUITE" == "$PY_LINT" ]]; then pylint --rcfile=pylintrc google/cloud/security/common google/cloud/security/enforcer google/cloud/security/iam google/cloud/security/inventory google/cloud-security/inventory google/cloud/security/notifier google/cloud/security/scanner scripts/gcp_setup; fi
   - if [[ "$TEST_SUITE" == "$PY_TEST" ]]; then coverage run --source='google.cloud.security' --omit='__init__.py' -m unittest discover -s . -p '*_test.py'; codecov; fi
   - if [[ "$TEST_SUITE" == "$BUILD" ]]; then yes | which forseti_inventory; yes | which forseti_iam; fi
 
